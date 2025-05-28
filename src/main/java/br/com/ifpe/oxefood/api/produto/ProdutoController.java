@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ifpe.oxefood.api.cliente.ClienteRequest;
-import br.com.ifpe.oxefood.modelo.cliente.Cliente;
+import br.com.ifpe.oxefood.modelo.categoriaProduto.CategoriaProdutoService;
 import br.com.ifpe.oxefood.modelo.produto.Produto;
 import br.com.ifpe.oxefood.modelo.produto.ProdutoService;
 
@@ -25,13 +24,20 @@ import br.com.ifpe.oxefood.modelo.produto.ProdutoService;
 @RequestMapping("/api/produto")
 @CrossOrigin //Utilizada para o controller receber requisições do React
 public class ProdutoController {
-       @Autowired //Instanciar no cliente service
-   private ProdutoService produtoService;
+
+     @Autowired //Instanciar no cliente service
+   private ProdutoService produtoService; 
+
+    @Autowired
+   private CategoriaProdutoService categoriaProdutoService;
 
    @PostMapping //Especificar que essa função vai receber requisições do tipo Post
    public ResponseEntity<Produto> save(@RequestBody ProdutoRequest request) {
 
-       Produto produto = produtoService.save(request.build());
+     Produto produtoNovo = request.build();
+       produtoNovo.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
+       Produto produto = produtoService.save(produtoNovo);
+
        return new ResponseEntity<Produto>(produto, HttpStatus.CREATED);
    }
 
@@ -48,7 +54,10 @@ public class ProdutoController {
     @PutMapping("/{id}")
  public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody ProdutoRequest request) {
 
-       produtoService.update(id, request.build());
+       Produto produto = request.build();
+       produto.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
+       produtoService.update(id, produto);
+    
        return ResponseEntity.ok().build();
  }
 
