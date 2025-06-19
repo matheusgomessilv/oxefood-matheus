@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -12,7 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-@Entity
+
 @Table(name = "Cliente")
 @org.hibernate.annotations.SQLRestriction("habilitado = true")
 
@@ -20,9 +23,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor 
-
+@Entity
 public class EnderecoCliente {
-    
+ @Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;  
     @JsonIgnore
    @ManyToOne
    private Cliente cliente;
