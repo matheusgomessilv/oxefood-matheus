@@ -31,17 +31,17 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cliente extends EntidadeAuditavel  {
-  
- @OneToOne
+public class Cliente extends EntidadeAuditavel {
+
+   @OneToOne
    @JoinColumn(nullable = false)
    private Usuario usuario;
 
-@OneToMany(mappedBy = "cliente", orphanRemoval = true, fetch = FetchType.EAGER)
-@Fetch(FetchMode.SUBSELECT)
+   @OneToMany(mappedBy = "cliente", orphanRemoval = true, fetch = FetchType.EAGER)
+   @Fetch(FetchMode.SUBSELECT)
    private List<EnderecoCliente> enderecos;
 
-    @Column(nullable = false, length = 100)
+   @Column(nullable = false, length = 100)
    private String nome;
 
    @Column
@@ -57,4 +57,3 @@ public class Cliente extends EntidadeAuditavel  {
    private String foneFixo;
 
 }
-
